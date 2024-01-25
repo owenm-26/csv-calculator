@@ -33,9 +33,6 @@ class CSVCalculatorHandler:
                 while(not row[i].isalpha()):
                     params += [int(row[i])] #cast to int and add to params list
                     i+=1
-                if(len(params) < 2): #make sure the call has enough params
-                    error = 2
-                    print("Bad Number of Params")
                 
                 # assign method var
                 method = row[i] 
@@ -56,11 +53,8 @@ class CSVCalculatorHandler:
                         result = calc.divide(params)
                     else:
                         result = calc.exponentiate(params)
+                        
                 #Error handling
-                except ZeroDivisionError:
-                    error = 1
-                    print("Divided by Zero")
-
                 except:
                     error = 4
                     print("Unknown Error")
