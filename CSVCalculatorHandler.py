@@ -43,17 +43,17 @@ class CSVCalculatorHandler:
                 try:
                     calc = Calculator()
                     # NEED TO CALL FUNCTION HERE (switch statement)
-                    if(method.equals("add")):
+                    if(method == ("add")):
                         result = calc.add(params)
-                    elif(method.equals("subtract")):
+                    elif(method == ("subtract")):
                         result = calc.subtract(params)
-                    elif(method.equals("multiply")):
+                    elif(method == ("multiply")):
                         result = calc.multiply(params)
-                    elif(method.equals("divide")):
+                    elif(method ==("divide")):
                         result = calc.divide(params)
                     else:
                         result = calc.exponentiate(params)
-                        
+
                 #Error handling
                 except:
                     error = 4
@@ -75,12 +75,133 @@ class CSVCalculatorHandler:
                 writer = csv.writer(export_filename)
                 writer.writerows([self.unsavedHistory])
 
+    def testing(method, params, expected):
+        calc = Calculator
+        if(method == ("add")):
+            result = calc.add(params)
+        elif(method == ("subtract")):
+            result = calc.subtract(params)
+        elif(method == ("multiply")):
+            result = calc.multiply(params)
+        elif(method == ("divide")):
+            result = calc.divide(params)
+        else:
+            result = calc.exponentiate(params)
+        
+        if(result[1] == 1):   # divide by zero catcher
+            assert result[1] == expected
+        
+        else:
+            assert result[0] == expected
+    
+    def unitTests():
+        cch = CSVCalculatorHandler
+        print('Calculator function Test Cases:')
+        print('Calculator.add():') #add tests
+        print("int + int: ")
+        if (cch.testing('add', [1,2], 3) != AssertionError):
+            print('----pass----')
+        print("double + double: ")
+        if (cch.testing('add', [1.0,2.0], 3.0) != AssertionError):
+            print('----pass----')
+        print("int + double: ")
+        if (cch.testing('add', [1,2.0], 3.0) != AssertionError):
+            print('----pass----')
+        print("lots of params: ") 
+        if (cch.testing('add', [1,2,3,4], 10) != AssertionError):
+            print('----pass----')
+        
+        print("/n***********************************")
+
+        print('Calculator.subtract():') #subtract tests
+        print("int - int: ")
+        if (cch.testing('subtract', [2,1], 1) != AssertionError):
+            print('----pass----')
+        print("double - double: ")
+        if (cch.testing('subtract', [2.0,1.0], 1.0) != AssertionError):
+            print('----pass----')
+        print("int - double: ")
+        if (cch.testing('subtract', [2,1.0], 1.0) != AssertionError):
+            print('----pass----')
+        print("lots of params: ") 
+        if (cch.testing('subtract', [5,2,1], 2) != AssertionError):
+            print('----pass----')
+        print("negative int - double: ") 
+        if (cch.testing('subtract', [1,3.0], -2.0) != AssertionError):
+            print('----pass----')
+
+        
+        print("/n***********************************")
+
+        print('Calculator.multiply():') #multiply tests
+        print("int * int: ")
+        if (cch.testing('multiply', [2,1], 2) != AssertionError):
+            print('----pass----')
+        print("double * double: ")
+        if (cch.testing('multiply', [2.0,1.0], 2.0) != AssertionError):
+            print('----pass----')
+        print("int * double: ")
+        if (cch.testing('multiply', [2,1.0], 2.0) != AssertionError):
+            print('----pass----')
+        print("lots of params: ") 
+        if (cch.testing('multiply', [5,2,1], 10) != AssertionError):
+            print('----pass----')
+        print("int * -double: ") 
+        if (cch.testing('multiply', [1,-3.0], -3.0) != AssertionError):
+            print('----pass----')
+        print("multiply by 0: ") 
+        if (cch.testing('multiply', [1,-3.0,0], 0.0) != AssertionError):
+            print('----pass----')
+
+        print("/n***********************************")
+
+        print('Calculator.divide():') #divide tests
+        print("int / int: ")
+        if (cch.testing('divide', [1,2], 0.5) != AssertionError):
+            print('----pass----')
+        print("double / double: ")
+        if (cch.testing('divide', [4.0,4.0], 1.0) != AssertionError):
+            print('----pass----')
+        print("int / double: ")
+        if (cch.testing('divide', [5,2.5], 2.0) != AssertionError):
+            print('----pass----')
+        print("lots of params: ") 
+        if (cch.testing('divide', [10,2,5], 1) != AssertionError):
+            print('----pass----')
+        print("int / -double: ") 
+        if (cch.testing('divide', [6,-3.0], -2.0) != AssertionError):
+            print('----pass----')
+        print("divide by 0: ") 
+        if (cch.testing('divide', [1,-3.0,0], 1) != AssertionError):
+            print('----pass----')
+
+        print("/n***********************************")
+
+        print('Calculator.exponentiate():') #exponentiate tests
+        print("int ** int: ")
+        if (cch.testing('exponentiate', [1,2], 1) != AssertionError):
+            print('----pass----')
+        print("double ** double: ")
+        if (cch.testing('exponentiate', [4.0,2.0], 16.0) != AssertionError):
+            print('----pass----')
+        print("int ** double: ")
+        if (cch.testing('exponentiate', [5,2.0], 25.0) != AssertionError):
+            print('----pass----')
+        print("lots of params: ") 
+        if (cch.testing('exponentiate', [2,2,2], 16) != AssertionError):
+            print('----pass----')
+        print("int ** -double: ") 
+        if (cch.testing('exponentiate', [2,-2.0], 0.25) != AssertionError):
+            print('----pass----')
+        print("exponentiate by 0: ") 
+        if (cch.testing('exponentiate', [1,-3.0,0], 1) != AssertionError):
+            print('----pass----')
+
+
 
 if __name__ == '__main__':
-
-    print("write some code, your testing software will call this main function")
-
-
+    cch = CSVCalculatorHandler
+    cch.unitTests()
 
 
 

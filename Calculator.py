@@ -1,7 +1,7 @@
 class Calculator:
     def add(operands):
         error = 0
-        if(operands < 2):
+        if(len(operands) < 2):
             error = 2
             result = 0
         else:
@@ -13,7 +13,7 @@ class Calculator:
     
     def subtract(operands):
         error = 0
-        if(operands < 2):
+        if(len(operands) < 2):
             error = 2
             result = 0
         else:
@@ -24,7 +24,7 @@ class Calculator:
 
     def multiply(operands):
         error = 0
-        if(operands < 2):
+        if(len(operands) < 2):
             error = 2
             result = 0
         else:
@@ -35,7 +35,7 @@ class Calculator:
 
     def divide(operands):
         error = 0
-        if(operands < 2):
+        if(len(operands) < 2):
             error = 2
             result = 0
         elif(0 in operands[1:]): # checks if dividing by 0
@@ -49,7 +49,7 @@ class Calculator:
 
     def exponentiate(operands):
         error = 0
-        if(operands < 2):
+        if(len(operands) < 2):
             error = 2
             result = 0
         else:
