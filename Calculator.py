@@ -35,7 +35,7 @@ class Calculator:
 
     def divide(self, operands):
         error = 0
-        if(len(operands) < 2):
+        if(len(operands) != 2):
             error = 2
             result = ""
         elif(0 in operands[1:]): # checks if dividing by 0
