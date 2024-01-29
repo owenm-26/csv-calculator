@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import csv
 import sys
-import numpy as np
+# import numpy as np
 from Calculator import Calculator
 class CSVCalculatorHandler:
     
     def __init__(self):
-        self.unsavedHistory = np.array(['input_file','operation','result','error']) # array variable to hold unsaved history ? 
+        self.unsavedHistory = ['input_file','operation','result','error'] # array variable to hold unsaved history ? 
 
     def process_csvs(self, filenames, output_prefix="output"):
         validMethods = ["add", "subtract", "multiply", "divide", "exponentiate"]
@@ -86,7 +86,7 @@ class CSVCalculatorHandler:
     def save_to_history(self, filename, operation, result, error_code):
         # write method inputs to the global variable 
         handler = CSVCalculatorHandler()
-        handler.unsavedHistory = np.append(handler.unsavedHistory, [filename,operation,result,error_code])
+        handler.unsavedHistory += [filename,operation,result,error_code]
 
     def history_export(self, export_filename):
         with open(export_filename, 'w'):
