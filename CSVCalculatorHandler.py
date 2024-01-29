@@ -12,12 +12,7 @@ class CSVCalculatorHandler:
         validMethods = ["add", "subtract", "multiply", "divide", "exponentiate"]
         # iterate through each file
         for file in filenames:
-            # create a new CSV to write to throughout loop of single file
-            outputFileName = output_prefix + file
-            with open(outputFileName, 'w', newline='') as outputFile:
-                writer = csv.writer(outputFile)
-                writer.writerows([['result', 'error']])
-
+            newRows = [['result', 'error']]
             #open first file
             with open(file, 'r') as csvfile:
                 oneFile = csv.reader(csvfile)
@@ -33,6 +28,7 @@ class CSVCalculatorHandler:
                     method = ""
                     error = 0
                     result = ""
+                    output = []
                     
                     # assign params var
                     for arg in row[:-1]:
@@ -40,40 +36,52 @@ class CSVCalculatorHandler:
                    
                     # assign method var
                     method = row[-1] #it should be the last argument
-                    print(params, method)
+                    print("Params:", params, "\nMethod:", method)
 
-                    print(method in validMethods)
                     if(method not in validMethods):
                         error = 3
                         print("Unknown Operator")
                     
-                if(error == 0):
-                    try:
-                        calc = Calculator()
-                        # NEED TO CALL FUNCTION HERE (switch statement)
-                        if(method == ("add")):
-                            result = calc.add(params)
-                        elif(method == ("subtract")):
-                            result = calc.subtract(params)
-                        elif(method == ("multiply")):
-                            result = calc.multiply(params)
-                        elif(method ==("divide")):
-                            result = calc.divide(params)
-                        else:
-                            result = calc.exponentiate(params)
-                        print("RESULT:", result)
+                    if(error == 0):
+                        try:
+                            calc = Calculator()
+                            # NEED TO CALL FUNCTION HERE (switch statement)
+                            if(method == ("add")):
+                                print('adding...')
+                                output = calc.add(params)
+                            elif(method == ("subtract")):
+                                print('subtracting...')
+                                output = calc.subtract(params)
+                            elif(method == ("multiply")):
+                                print('multiplying...')
+                                output = calc.multiply(params)
+                            elif(method ==("divide")):
+                                print('dividing...')
+                                output = calc.divide(params)
+                            else:
+                                print('exponentiating...')
+                                output = calc.exponentiate(params)
+                            print("OUTPUT:", output)
+                            result = output[0]
+                            error = output[1]
 
-                    #Error handling
-                    except:
-                        error = 4
-                        print("Unknown Error")
+                        #Error handling
+                        except Exception as e:
+                            error = 4
+                            print("Unknown Error: ", e)
+                    newRows += [[result, error]]
+                    print(newRows)
+
+            # create a new CSV to write to throughout loop of single file
+            outputFileName = output_prefix + file
+            with open(outputFileName, 'w', newline='') as outputFile:
+                writer = csv.writer(outputFile)
                 
-                # write new row to file
-                with open(outputFileName, 'a', newline='') as workingFile:
-                    writer = csv.writer(workingFile)
-                    writer.writerows([[result, error]])
-                    print('Row written: Method=', method, ", params=", params, ", \n**result=", result, ", error=", error)
-                self.save_to_history(self, filename=file, operation=method, result=result, error_code=error)
+                # Write new rows
+                for row in newRows:
+                    writer.writerow(row)
+
+            self.save_to_history(self, filename=file, operation=method, result=result, error_code=error)
 
     def save_to_history(self, filename, operation, result, error_code):
         # write method inputs to the global variable 
