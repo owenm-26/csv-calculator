@@ -49,7 +49,7 @@ class Calculator:
 
     def exponentiate(self, operands):
         error = 0
-        if(len(operands) < 2):
+        if(len(operands) != 2):
             error = 2
             result = ""
         else:
