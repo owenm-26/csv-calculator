@@ -8,6 +8,7 @@ class CSVCalculatorHandler:
 
     def process_csvs(self, filenames, output_prefix="output"):
         validMethods = ["add", "subtract", "multiply", "divide", "exponentiate"]
+        fileNum = 0
         # iterate through each file
         for file in filenames:
             newRows = [['result', 'error']]
@@ -71,13 +72,14 @@ class CSVCalculatorHandler:
                     self.save_to_history(filename=file, operation=processedInput, result=result, error_code=error)
 
             # create a new CSV to write to throughout loop of single file
-            outputFileName = output_prefix + file
+            outputFileName = output_prefix + "_" + str(fileNum)
             with open(outputFileName, 'w', newline='') as outputFile:
                 writer = csv.writer(outputFile)
                 
                 # Write new rows
                 for row in newRows:
                     writer.writerow(row)
+            fileNum +=1
             
 
     def save_to_history(self, filename, operation, result, error_code):
@@ -228,7 +230,7 @@ if __name__ == '__main__':
         for arg in sys.argv[1:]:
             args += [arg]
         
-        cch.process_csvs(filenames=args, output_prefix='output_test_')
+        cch.process_csvs(filenames=args, output_prefix='output')
 
         cch.history_export(export_filename='history.txt')
 
