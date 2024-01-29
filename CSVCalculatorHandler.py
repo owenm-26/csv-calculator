@@ -1,12 +1,10 @@
-#!/usr/bin/env python3
 import csv
 import sys
-# import numpy as np
 from Calculator import Calculator
 class CSVCalculatorHandler:
     
     def __init__(self):
-        self.unsavedHistory = ['input_file','operation','result','error'] # array variable to hold unsaved history ? 
+        self.unsavedHistory = [['input_file','operation','result','error']] # array variable to hold unsaved history ? 
 
     def process_csvs(self, filenames, output_prefix="output"):
         validMethods = ["add", "subtract", "multiply", "divide", "exponentiate"]
@@ -19,8 +17,6 @@ class CSVCalculatorHandler:
     
                 # iterate through each row of the CSV selected
                 for row in oneFile:
-                    print('----------')
-                    print(row)
                     i = 0 #counter
 
                     # instantiate inputs to function
@@ -29,6 +25,7 @@ class CSVCalculatorHandler:
                     error = 0
                     result = ""
                     output = []
+                    processedInput = ""
                     
                     # assign params var
                     for arg in row[:-1]:
@@ -36,7 +33,6 @@ class CSVCalculatorHandler:
                    
                     # assign method var
                     method = row[-1] #it should be the last argument
-                    print("Params:", params, "\nMethod:", method)
 
                     if(method not in validMethods):
                         error = 3
@@ -47,21 +43,15 @@ class CSVCalculatorHandler:
                             calc = Calculator()
                             # NEED TO CALL FUNCTION HERE (switch statement)
                             if(method == ("add")):
-                                print('adding...')
-                                output = calc.add(params)
+                                output = calc.add(operands=params)
                             elif(method == ("subtract")):
-                                print('subtracting...')
-                                output = calc.subtract(params)
+                                output = calc.subtract(operands=params)
                             elif(method == ("multiply")):
-                                print('multiplying...')
-                                output = calc.multiply(params)
+                                output = calc.multiply(operands=params)
                             elif(method ==("divide")):
-                                print('dividing...')
-                                output = calc.divide(params)
+                                output = calc.divide( operands=params)
                             else:
-                                print('exponentiating...')
-                                output = calc.exponentiate(params)
-                            print("OUTPUT:", output)
+                                output = calc.exponentiate( operands=params)
                             result = output[0]
                             error = output[1]
 
@@ -69,8 +59,16 @@ class CSVCalculatorHandler:
                         except Exception as e:
                             error = 4
                             print("Unknown Error: ", e)
+
+                    #add to running newRows var
                     newRows += [[result, error]]
-                    print(newRows)
+                    
+                    #prepare var for history
+                    for i in range(len(row)):
+                        processedInput += row[i]
+                        if(i< len(row)-1):
+                            processedInput += ","
+                    self.save_to_history(filename=file, operation=processedInput, result=result, error_code=error)
 
             # create a new CSV to write to throughout loop of single file
             outputFileName = output_prefix + file
@@ -80,21 +78,22 @@ class CSVCalculatorHandler:
                 # Write new rows
                 for row in newRows:
                     writer.writerow(row)
-
-            self.save_to_history(self, filename=file, operation=method, result=result, error_code=error)
+            
 
     def save_to_history(self, filename, operation, result, error_code):
         # write method inputs to the global variable 
-        handler = CSVCalculatorHandler()
-        handler.unsavedHistory += [filename,operation,result,error_code]
+        self.unsavedHistory += [[filename,operation,result,error_code]]
 
     def history_export(self, export_filename):
-        with open(export_filename, 'w'):
-                writer = csv.writer(export_filename)
-                writer.writerows([self.unsavedHistory])
+        print("------------------\n", self.unsavedHistory, "\n------------------")
+        with open(export_filename, 'w', newline='') as file:
+                writer = csv.writer(file)
+                for row in self.unsavedHistory:
+                    writer.writerow(row)
+                
 
     def testing(method, params, expected):
-        calc = Calculator
+        calc = Calculator()
         if(method == ("add")):
             result = calc.add(params)
         elif(method == ("subtract")):
@@ -113,7 +112,7 @@ class CSVCalculatorHandler:
             assert result[0] == expected
     
     def unitTests():
-        cch = CSVCalculatorHandler
+        cch = CSVCalculatorHandler()
         print('Calculator function Test Cases:')
         print('Calculator.add():') #add tests
         print("int + int: ")
@@ -218,7 +217,7 @@ class CSVCalculatorHandler:
 
 
 if __name__ == '__main__':
-    cch = CSVCalculatorHandler
+    cch = CSVCalculatorHandler()
     #cch.unitTests()
 
     if(len(sys.argv) < 2):
@@ -229,8 +228,9 @@ if __name__ == '__main__':
         for arg in sys.argv[1:]:
             args += [arg]
         
-        cch.process_csvs(self=cch, filenames=args, output_prefix='output_test_')
-        
+        cch.process_csvs(filenames=args, output_prefix='output_test_')
+
+        cch.history_export(export_filename='exported_history.txt')
 
 
 
