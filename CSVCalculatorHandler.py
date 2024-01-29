@@ -72,7 +72,7 @@ class CSVCalculatorHandler:
                     self.save_to_history(filename=file, operation=processedInput, result=result, error_code=error)
 
             # create a new CSV to write to throughout loop of single file
-            outputFileName = output_prefix + "_" + str(fileNum)
+            outputFileName = output_prefix + "_" + str(fileNum) + ".csv"
             with open(outputFileName, 'w', newline='') as outputFile:
                 writer = csv.writer(outputFile)
                 
