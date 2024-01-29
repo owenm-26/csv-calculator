@@ -218,7 +218,7 @@ class CSVCalculatorHandler:
 
 if __name__ == '__main__':
     cch = CSVCalculatorHandler()
-    #cch.unitTests()
+    #cch.unitTests() ##uncomment to test calc methods
 
     if(len(sys.argv) < 2):
         print('Need at least 1 csv to process')
@@ -230,7 +230,7 @@ if __name__ == '__main__':
         
         cch.process_csvs(filenames=args, output_prefix='output_test_')
 
-        cch.history_export(export_filename='exported_history.txt')
+        cch.history_export(export_filename='history.txt')
 
 
 
