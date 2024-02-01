@@ -19,7 +19,7 @@ class CSVCalculatorHandler:
                 # iterate through each row of the CSV selected
                 for row in oneFile:
                     i = 0 #counter
-
+ 
                     # instantiate inputs to function
                     params = []
                     method = ""

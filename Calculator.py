@@ -32,7 +32,7 @@ class Calculator:
             for i in operands[1:]: #skip the first operand because it is assigned to result already
                 result *= i
         return [result, error]
-
+ 
     def divide(self, operands):
         error = 0
         if(len(operands) != 2):
