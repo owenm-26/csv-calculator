@@ -1,6 +1,6 @@
+# CSV-Calculator
 
-
-**Objective:** In this assignment, you'll create a calculator program that reads operations and operands from CSV files,
+**Objective:** To create a calculator program that reads operations and operands from CSV files,
 performs the operations, and saves the result to another CSV file. Furthermore, the program will maintain a history of
 all operations and results.
 
