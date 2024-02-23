@@ -41,6 +41,8 @@ all operations and results.
 
 Below is an example input and output:
 
+`python3 CSVCalculatorHandler.py input.csv`
+
 File name: `input.csv`
 
 ```
